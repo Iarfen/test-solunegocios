@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Carga masiva</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <style>
+        body
+        {
+            background-color: #52f79c;
+            font-family: calibri;
+        }
+
+        h1
+        {
+            margin: 0px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .button
+        {
+            display: inline-block;
+            cursor: pointer;
+            background-color: #15a154;
+            padding: 10px 20px;
+            color: #FFFFFF;
+        }
+
+        #massive_charge_form_file
+        {
+            display: none;
+        }
+
+        #layout_content
+        {
+            background-color: #FFFFFF;
+            border: 1px solid #000000;
+            padding: 10px;
+            text-align: center;
+            width: 500px;
+            margin: 0 auto;
+        }
+
+        #massive_charge_form_submit
+        {
+            margin-top: 10px;
+        }
+    </style>
+  </head>
+
+  <body>
+    <div id="layout_content">
+    <h1>Carga masiva</h1>
+    <form id="massive_charge_form" action="massive_charge/send" method="POST">
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+        <div>
+            <input id="massive_charge_form_file" type="file" name="file" onchange="show_file()" />
+            <div class="button" onclick="open_file()">Seleccionar archivo</div>
+            <span id="file_text"></span>
+        </div>
+        <div id="massive_charge_form_submit" class="button" onclick="send_form()">Cargar usuarios</div>
+    </form>
+    </div>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script>
+            function send_form()
+            {
+                $('#massive_charge_form').submit();
+            }
+
+            function open_file()
+            {
+                $('#massive_charge_form_file').click();
+            }
+
+            function show_file()
+            {
+                var fullPath = $('#massive_charge_form_file').prop("value");
+                var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+                var filename = fullPath.substring(startIndex);
+                if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0)
+                {
+                    filename = filename.substring(1);
+                }
+                $('#file_text').html(filename);
+            }
+        </script>
+  </body>
+</html>
